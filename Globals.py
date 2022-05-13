@@ -1,2 +1,3 @@
-displayWidth = int(600*1.8)
-displayHeight = 600
+scale=1/0.6
+displayWidth = int(1800/scale)
+displayHeight = int(1000/scale)
