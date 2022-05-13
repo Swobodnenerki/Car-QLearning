@@ -14,7 +14,7 @@ import os
 from Globals import displayHeight, displayWidth
 from Game import Game
 
-frameRate = 7.0
+frameRate = 30.0
 
 vec2 = pygame.math.Vector2
 
@@ -24,12 +24,40 @@ class MyWindow(pyglet.window.Window):
         self.set_minimum_size(400, 300)
         # load background image
         self.game = Game()
+        self.firstClick = True
 
     def on_draw(self):
         self.game.render()
 
+    def on_mouse_press(self, x, y, button, modifiers):
+        # print(x,y)
+        if self.firstClick:
+            self.clickPos = [x, y]
+        else:
+            print("self.walls.append(Wall({}, {}, {}, {}))".format(self.clickPos[0],
+                                                                    displayHeight - self.clickPos[1],
+                                                                    x, displayHeight - y))
+        #
+            # self.gates.append(RewardGate(self.clickPos[0], self.clickPos[1], x, y))
+        
+        self.firstClick = not self.firstClick
 
+    def update(self, dt):
+        self.game.car.update()
+
+    def on_key_press(self, symbol, modifiers):
+        if symbol == key.LEFT:
+            self.game.car.updateWithAction(0)
+        if symbol == key.RIGHT:
+            self.game.car.updateWithAction(1)
+        if symbol == key.UP:
+            self.game.car.updateWithAction(2)
+        if symbol == key.DOWN:
+            self.game.car.updateWithAction(3)
+
+    def on_key_release(self, symbol, modifiers):
+        pass
 if __name__ == "__main__":
     window = MyWindow(displayWidth, displayHeight, "AI Learns to Drive", resizable=False)
-    #pyglet.clock.schedule_interval(window.update, 1 / frameRate)
+    pyglet.clock.schedule_interval(window.update, 1 / frameRate)
     pyglet.app.run()

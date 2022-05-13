@@ -17,6 +17,7 @@ class Game:
     def __init__(self):
         trackImg = pyglet.image.load('images/track.png')
         self.trackSprite = pyglet.sprite.Sprite(trackImg, x=0, y=0)
+        self.trackSprite.update(scale=0.6)
         # initiate car
 
         # initiate walls
@@ -30,67 +31,7 @@ class Game:
         self.car = Car(self.walls, self.gates)
 
     def set_walls(self):
-        self.walls.append(Wall(240, 809, 200, 583))
-        self.walls.append(Wall(200, 583, 218, 395))
-        self.walls.append(Wall(218, 395, 303, 255))
-        self.walls.append(Wall(303, 255, 548, 173))
-        self.walls.append(Wall(548, 173, 764, 179))
-        self.walls.append(Wall(764, 179, 1058, 198))
-        self.walls.append(Wall(1055, 199, 1180, 215))
-        self.walls.append(Wall(1177, 215, 1220, 272))
-        self.walls.append(Wall(1222, 273, 1218, 367))
-        self.walls.append(Wall(1218, 367, 1150, 437))
-        self.walls.append(Wall(1150, 437, 1044, 460))
-        self.walls.append(Wall(1044, 460, 757, 600))
-        self.walls.append(Wall(757, 600, 1099, 570))
-        self.walls.append(Wall(1100, 570, 1187, 508))
-        self.walls.append(Wall(1187, 507, 1288, 443))
-        self.walls.append(Wall(1288, 443, 1463, 415))
-        self.walls.append(Wall(1463, 415, 1615, 478))
-        self.walls.append(Wall(1617, 479, 1727, 679))
-        self.walls.append(Wall(1727, 679, 1697, 874))
-        self.walls.append(Wall(1694, 872, 1520, 964))
-        self.walls.append(Wall(1520, 964, 1100, 970))
-        self.walls.append(Wall(1105, 970, 335, 960))
-        self.walls.append(Wall(339, 960, 264, 899))
-        self.walls.append(Wall(263, 897, 238, 803))
-        self.walls.append(Wall(317, 782, 274, 570))
-        self.walls.append(Wall(275, 569, 284, 407))
-        self.walls.append(Wall(284, 407, 363, 317))
-        self.walls.append(Wall(363, 317, 562, 240))
-        self.walls.append(Wall(562, 240, 1114, 284))
-        self.walls.append(Wall(1114, 284, 1120, 323))
-        self.walls.append(Wall(1120, 323, 1045, 377))
-        self.walls.append(Wall(1045, 378, 682, 548))
-        self.walls.append(Wall(682, 548, 604, 610))
-        self.walls.append(Wall(604, 612, 603, 695))
-        self.walls.append(Wall(605, 695, 702, 713))
-        self.walls.append(Wall(703, 712, 1128, 642))
-        self.walls.append(Wall(1129, 642, 1320, 512))
-        self.walls.append(Wall(1323, 512, 1464, 497))
-        self.walls.append(Wall(1464, 497, 1579, 535))
-        self.walls.append(Wall(1579, 535, 1660, 701))
-        self.walls.append(Wall(1660, 697, 1634, 818))
-        self.walls.append(Wall(1634, 818, 1499, 889))
-        self.walls.append(Wall(1499, 889, 395, 883))
-        self.walls.append(Wall(395, 883, 330, 838))
-        self.walls.append(Wall(330, 838, 315, 782))
-        self.walls.append(Wall(319, 798, 306, 725))
-        self.walls.append(Wall(276, 580, 277, 543))
-        self.walls.append(Wall(603, 639, 622, 590))
-        self.walls.append(Wall(599, 655, 621, 704))
-        self.walls.append(Wall(1074, 571, 1115, 558))
-        self.walls.append(Wall(1314, 516, 1333, 511))
-        self.walls.append(Wall(1692, 875, 1706, 830))
-        self.walls.append(Wall(277, 912, 255, 872))
-        self.walls.append(Wall(1214, 262, 1225, 288))
-        self.walls.append(Wall(1601, 470, 1625, 490))
-        self.walls.append(Wall(1119, 644, 1139, 634))
-        self.walls.append(Wall(687, 710, 719, 710))
-        self.walls.append(Wall(1721, 664, 1727, 696))
-        self.walls.append(Wall(1015, 392, 1065, 362))
-        self.walls.append(Wall(1091, 572, 1104, 568))
-        self.walls.append(Wall(1157, 528, 1233, 478))
+        pass
 
     def set_gates(self):
         self.gates.append(RewardGate(314, 345, 200, 326))
@@ -281,14 +222,15 @@ class Car:
 
     def __init__(self, walls, rewardGates):
         global vec2
-        self.x = 258
-        self.y = 288
+        self.x = 161
+        self.y = 138
         self.vel = 0
         self.direction = vec2(0, 1)
         self.direction = self.direction.rotate(180 / 12)
         self.acc = 0
-        self.width = 40
-        self.height = 20
+        self.scalefactor = 0.8
+        self.width = 40*self.scalefactor
+        self.height = 30*self.scalefactor
         self.turningRate = 5.0 / self.width
         self.friction = 0.98
         self.maxSpeed = self.width / 4.0
@@ -326,8 +268,8 @@ class Car:
 
     def reset(self):
         global vec2
-        self.x = 258
-        self.y = 288
+        self.x = 204
+        self.y = 152
         self.vel = 0
         self.direction = vec2(0, 1)
         self.direction = self.direction.rotate(180 / 12)

@@ -590,18 +590,19 @@ class MyWindow(pyglet.window.Window):
         #     self.ai.training = not self.ai.training
 
     def on_mouse_press(self, x, y, button, modifiers):
-        # # print(x,y)
-        # if self.firstClick:
-        #     self.clickPos = [x, y]
-        # else:
-        #     # print("self.walls.append(Wall({}, {}, {}, {}))".format(self.clickPos[0],
-        #     #                                                        displayHeight - self.clickPos[1],
-        #     #                                                        x, displayHeight - y))
+        # print(x,y)
+        if self.firstClick:
+            self.clickPos = [x, y]
+        else:
+            print("self.walls.append(Wall({}, {}, {}, {}))".format(self.clickPos[0],
+                                                                    displayHeight - self.clickPos[1],
+                                                                    x, displayHeight - y))
         #
-        #     # self.gates.append(RewardGate(self.clickPos[0], self.clickPos[1], x, y))
-        #
-        # self.firstClick = not self.firstClick
-        pass
+            # self.gates.append(RewardGate(self.clickPos[0], self.clickPos[1], x, y))
+        
+        self.firstClick = not self.firstClick
+  
+
 
     """
     called every frame
