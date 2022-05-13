@@ -136,8 +136,9 @@ class Game:
 
 
     def get_state(self):
-        return self.car.getState()
         pass
+        #return self.car.getState()
+        
 
     def make_action(self, action):
         # returns reward

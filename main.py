@@ -14,7 +14,7 @@ import os
 from Globals import displayHeight, displayWidth
 from Game import Game
 
-frameRate = 30.0
+frameRate = 7.0
 
 vec2 = pygame.math.Vector2
 
@@ -166,7 +166,7 @@ class QLearning:
             if self.game.is_episode_finished():
                 reward = -100
                 self.stepNo = self.maxSteps
-                print("DEAD!! Reward =  -100")
+                #print("DEAD!! Reward =  -100")
 
             # print("Episode {} Step {} Action {} reward {} epsilon {} experiences stored {}"
             #       .format(self.episodeNo, self.stepNo, actionNo, reward, epsilon, self.trainingStepNo))
@@ -647,7 +647,7 @@ class MyWindow(pyglet.window.Window):
     """
 
     def update(self, dt):
-        for i in range(5):
+        for _ in range(5):
 
             if self.ai.training:
                 self.ai.train()
