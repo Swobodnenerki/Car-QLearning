@@ -57,6 +57,7 @@ class MyWindow(pyglet.window.Window):
 
     def on_key_release(self, symbol, modifiers):
         pass
+    
 if __name__ == "__main__":
     window = MyWindow(displayWidth, displayHeight, "AI Learns to Drive", resizable=False)
     pyglet.clock.schedule_interval(window.update, 1 / frameRate)
