@@ -49,12 +49,12 @@ memory_size = 100000  # Number of experiences the Memory can keep
 pretrain_length = memory_size  # Number of experiences stored in the Memory when initialized for the first time
 
 ### MODIFY THIS TO FALSE IF YOU JUST WANT TO SEE THE TRAINED AGENT
-training =  False
+training =  True
 
 ## TURN THIS TO TRUE IF YOU WANT TO RENDER THE ENVIRONMENT
-episode_render = True
+episode_render = False
 
-load = True
+load = False
 
 starting_episode = 0
 
@@ -480,10 +480,10 @@ def predict_action(explore_start, explore_stop, decay_rate, decay_step, state, a
 # Thanks of the very good implementation of Arthur Juliani https://github.com/awjuliani
 def update_target_graph():
     # Get the parameters of our DQNNetwork
-    from_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "DQNetwork")
+    from_vars = tf.compat.v1.get_collection(tf.compat.v1.GraphKeys.TRAINABLE_VARIABLES, "DQNetwork")
 
     # Get the parameters of our Target_network
-    to_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, "TargetNetwork")
+    to_vars = tf.compat.v1.get_collection(tf.compat.v1.GraphKeys.TRAINABLE_VARIABLES, "TargetNetwork")
 
     op_holder = []
 
@@ -558,14 +558,15 @@ class MyWindow(pyglet.window.Window):
 # Saver will help us to save our model
 print("training")
 if training:
-    with tf.Session() as sess:
+    with tf.compat.v1.Session() as sess:
         # Initialize the variables
         # if load:
+        saver = tf.compat.v1.train.Saver()
 
         if load:
-            sess.saver.restore(sess, "./models/model.ckpt")
+            saver.restore(sess, "./models/model.ckpt")
         else:
-            sess.run(tf.global_variables_initializer())
+            sess.run(tf.compat.v1.global_variables_initializer())
 
         # Initialize the decay rate (that will use to reduce epsilon)
         decay_step = 0
@@ -722,12 +723,12 @@ if training:
                 directory = "./allModels/model{}".format(episode)
                 if not os.path.exists(directory):
                     os.makedirs(directory)
-                save_path = sess.saver.save(sess, "./allModels/model{}/models/model.ckpt".format(episode))
+                save_path = saver.save(sess, "./allModels/model{}/models/model.ckpt".format(episode))
                 # print("Model Saved")
 
             # Save model every 5 episodes
             if episode % 5 == 0:
-                save_path = sess.saver.save(sess, "./models/model.ckpt")
+                save_path = saver.save(sess, "./models/model.ckpt")
                 print("Model Saved")
 else:
     print("setting up window")
