@@ -37,8 +37,8 @@ max_tau = 10000  # Tau is the C step where we update our target network
 
 # EXPLORATION HYPERPARAMETERS for epsilon greedy strategy
 explore_start = 1.0  # exploration probability at start
-explore_stop = 0.01  # minimum exploration probability
-decay_rate = 0.00005  # exponential decay rate for exploration prob
+explore_stop = 0.1  # minimum exploration probability
+decay_rate = 0.00001  # exponential decay rate for exploration prob
 
 # Q LEARNING hyperparameters
 gamma = 0.95  # Discounting rate
@@ -51,16 +51,13 @@ pretrain_length = memory_size  # Number of experiences stored in the Memory when
 ### MODIFY THIS TO FALSE IF YOU JUST WANT TO SEE THE TRAINED AGENT
 training =  True
 
-## TURN THIS TO TRUE IF YOU WANT TO RENDER THE ENVIRONMENT
-episode_render = False
-
 load = False
 
 starting_episode = 0
 
 load_traing_model = False
 
-load_training_model_number = 300
+load_training_model_number = 0
 
 
 class DDDQNNet:
@@ -91,7 +88,7 @@ class DDDQNNet:
                                           activation=tf.nn.elu,
                                           kernel_initializer=tf.compat.v1.keras.initializers.VarianceScaling(scale=1.0, mode="fan_avg", distribution="uniform"),
                                           name="dense1")
-            print("We here: " + str(self.dense1))
+            #print("We here: " + str(self.dense1))
 
             self.dense2 = tf.compat.v1.layers.dense(inputs=self.dense1,
                                           units=256,
@@ -503,6 +500,7 @@ class MyWindow(pyglet.window.Window):
         # set background color
         backgroundColor = [10, 0, 0, 255]
         backgroundColor = [i / 255 for i in backgroundColor]
+        self.firstClick = True
         glClearColor(*backgroundColor)
         # load background image
         self.sess = tf.compat.v1.Session()
@@ -510,13 +508,24 @@ class MyWindow(pyglet.window.Window):
         game.new_episode()
         self.state = game.get_state()
         self.nextState = []
+        self.load_training_model_number = 60 ## DONT FORGET
         self.loadSession()
 
     def loadSession(self):
         if load_traing_model:
-            directory = "./allModels/model{}/models/model.ckpt".format(load_training_model_number)
-            self.saver.restore(self.sess, directory)
+            directory = "./allModels/model{}/models/model.ckpt".format(self.load_training_model_number)
+            self.sess.saver.restore(self.sess, directory)
 
+    def on_mouse_press(self, x, y, button, modifiers):
+        # print(x,y)
+        if self.firstClick:
+            self.clickPos = [x, y]
+        else:
+            print("self.gates.append(RewardGate({}, {}, {}, {}))".format(self.clickPos[0],
+                                                                    displayHeight - self.clickPos[1],
+                                                                    x, displayHeight - y))
+        #
+            # self.gates.append(RewardGate(self.clickPos[0], self.clickPos[1], x, y))
 
     def on_draw(self):
         game.render()
@@ -557,6 +566,7 @@ class MyWindow(pyglet.window.Window):
 
 # Saver will help us to save our model
 print("training")
+print(load_training_model_number)
 if training:
     with tf.compat.v1.Session() as sess:
         # Initialize the variables
@@ -564,7 +574,7 @@ if training:
         saver = tf.compat.v1.train.Saver()
 
         if load:
-            saver.restore(sess, "./models/model.ckpt")
+            saver.restore(sess, "./allModels/model{}/models/model.ckpt".format(load_training_model_number))
         else:
             sess.run(tf.compat.v1.global_variables_initializer())
 
@@ -727,9 +737,9 @@ if training:
                 # print("Model Saved")
 
             # Save model every 5 episodes
-            if episode % 5 == 0:
-                save_path = saver.save(sess, "./models/model.ckpt")
-                print("Model Saved")
+            # if episode % 5 == 0:
+            #   save_path = saver.save(sess, "./models/model.ckpt")
+            #   print("Model Saved")
 else:
     print("setting up window")
     window = MyWindow(displayWidth, displayHeight, "AI Learns to Drive", resizable=False)

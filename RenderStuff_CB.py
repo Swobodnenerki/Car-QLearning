@@ -34,11 +34,13 @@ class MyWindow(pyglet.window.Window):
         if self.firstClick:
             self.clickPos = [x, y]
         else:
-            print("self.walls.append(Wall({}, {}, {}, {}))".format(self.clickPos[0],
-                                                                    displayHeight - self.clickPos[1],
-                                                                    x, displayHeight - y))
+            #print("self.gates.append(RewardGate({}, {}, {}, {}))".format(self.clickPos[0],
+            #                                                       displayHeight - self.clickPos[1],
+            #                                                       x, displayHeight - y))
         #
-            # self.gates.append(RewardGate(self.clickPos[0], self.clickPos[1], x, y))
+            print("self.gates.append(RewardGate({}, {}, {}, {}))".format(self.clickPos[0],
+                                                                   self.clickPos[1],
+                                                                   x, y))
         
         self.firstClick = not self.firstClick
 
