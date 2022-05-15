@@ -651,14 +651,13 @@ class MyWindow(pyglet.window.Window):
     """
 
     def update(self, dt):
-        self.game.car.update()
+        #self.game.car.update()
         for i in range(5):
 
             if self.ai.training:                                           
                 self.ai.train()
             else:
                 self.ai.test()
-                
                 return
         
 

@@ -17,6 +17,7 @@ from Game import Game
 frameRate = 30.0
 
 vec2 = pygame.math.Vector2
+tf.compat.v1.disable_eager_execution()
 
 game = Game()
 possible_actions = np.identity(game.no_of_actions, dtype=int).tolist()
@@ -71,58 +72,59 @@ class DDDQNNet:
 
         # We use tf.variable_scope here to know which network we're using (DQN or target_net)
         # it will be useful when we will update our w- parameters (by copy the DQN parameters)
-        with tf.variable_scope(self.name):
+        with tf.compat.v1.variable_scope(self.name):
             # We create the placeholders
             # *state_size means that we take each elements of state_size in tuple hence is like if we wrote
             # [None, 100, 120, 4]
-            self.inputs_ = tf.placeholder(tf.float32, [None, *state_size], name="inputs")
+            self.inputs_ = tf.compat.v1.placeholder(tf.float32, [None, *state_size], name="inputs")
 
             #
-            self.ISWeights_ = tf.placeholder(tf.float32, [None, 1], name='IS_weights')
+            self.ISWeights_ = tf.compat.v1.placeholder(tf.float32, [None, 1], name='IS_weights')
 
-            self.actions_ = tf.placeholder(tf.float32, [None, action_size], name="actions_")
+            self.actions_ = tf.compat.v1.placeholder(tf.float32, [None, action_size], name="actions_")
 
             # Remember that target_Q is the R(s,a) + ymax Qhat(s', a')
-            self.target_Q = tf.placeholder(tf.float32, [None], name="target")
+            self.target_Q = tf.compat.v1.placeholder(tf.float32, [None], name="target")
 
-            self.dense1 = tf.layers.dense(inputs=self.inputs_,
+            self.dense1 = tf.compat.v1.layers.dense(inputs=self.inputs_,
                                           units=256,
                                           activation=tf.nn.elu,
-                                          kernel_initializer=tf.contrib.layers.xavier_initializer(),
+                                          kernel_initializer=tf.compat.v1.keras.initializers.VarianceScaling(scale=1.0, mode="fan_avg", distribution="uniform"),
                                           name="dense1")
+            print("We here: " + str(self.dense1))
 
-            self.dense2 = tf.layers.dense(inputs=self.dense1,
+            self.dense2 = tf.compat.v1.layers.dense(inputs=self.dense1,
                                           units=256,
                                           activation=tf.nn.elu,
-                                          kernel_initializer=tf.contrib.layers.xavier_initializer(),
+                                          kernel_initializer=tf.compat.v1.keras.initializers.VarianceScaling(scale=1.0, mode="fan_avg", distribution="uniform"),
                                           name="dense2")
 
             ## Here we separate into two streams
             # The one that calculate V(s)
-            self.value_fc = tf.layers.dense(inputs=self.dense2,
+            self.value_fc = tf.compat.v1.layers.dense(inputs=self.dense2,
                                             units=256,
                                             activation=tf.nn.elu,
-                                            kernel_initializer=tf.contrib.layers.xavier_initializer(),
+                                            kernel_initializer=tf.compat.v1.keras.initializers.VarianceScaling(scale=1.0, mode="fan_avg", distribution="uniform"),
                                             name="value_fc")
 
-            self.value = tf.layers.dense(inputs=self.value_fc,
+            self.value = tf.compat.v1.layers.dense(inputs=self.value_fc,
                                          units=1,
                                          activation=None,
-                                         kernel_initializer=tf.contrib.layers.xavier_initializer(),
+                                         kernel_initializer=tf.compat.v1.keras.initializers.VarianceScaling(scale=1.0, mode="fan_avg", distribution="uniform"),
                                          name="value")
 
             # The one that calculate A(s,a)
-            self.advantage_fc = tf.layers.dense(inputs=self.dense2,
+            self.advantage_fc = tf.compat.v1.layers.dense(inputs=self.dense2,
                                                 units=256,
                                                 activation=tf.nn.elu,
-                                                kernel_initializer=tf.contrib.layers.xavier_initializer(),
+                                                kernel_initializer=tf.compat.v1.keras.initializers.VarianceScaling(scale=1.0, mode="fan_avg", distribution="uniform"),
                                                 name="advantage_fc")
 
-            self.advantage = tf.layers.dense(inputs=self.advantage_fc,
+            self.advantage = tf.compat.v1.layers.dense(inputs=self.advantage_fc,
                                              units=self.action_size,
                                              activation=None,
-                                             kernel_initializer=tf.contrib.layers.xavier_initializer(),
-                                             name="advantages")
+                                             kernel_initializer=tf.compat.v1.keras.initializers.VarianceScaling(scale=1.0, mode="fan_avg", distribution="uniform"),
+                                             name="advantage")
 
             # Agregating layer
             # Q(s,a) = V(s) + (A(s,a) - 1/|A| * sum A(s,a'))
@@ -135,13 +137,13 @@ class DDDQNNet:
             # The loss is modified because of PER
             self.absolute_errors = tf.abs(self.target_Q - self.Q)  # for updating Sumtree
 
-            self.loss = tf.reduce_mean(self.ISWeights_ * tf.squared_difference(self.target_Q, self.Q))
+            self.loss = tf.reduce_mean(self.ISWeights_ * tf.square(self.target_Q - self.Q))
 
-            self.optimizer = tf.train.RMSPropOptimizer(self.learning_rate).minimize(self.loss)
+            self.optimizer = tf.compat.v1.train.AdamOptimizer(self.learning_rate).minimize(self.loss)
 
 
 # Reset the graph
-tf.reset_default_graph()
+tf.compat.v1.reset_default_graph()
 
 # Instantiate the DQNetwork
 DQNetwork = DDDQNNet(state_size, action_size, learning_rate, name="DQNetwork")
@@ -491,31 +493,30 @@ def update_target_graph():
     return op_holder
 
 
-saver = tf.train.Saver()
+    
 
 
 class MyWindow(pyglet.window.Window):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.set_minimum_size(400, 300)
-
         # set background color
         backgroundColor = [10, 0, 0, 255]
         backgroundColor = [i / 255 for i in backgroundColor]
         glClearColor(*backgroundColor)
         # load background image
-        self.sess = tf.Session()
+        self.sess = tf.compat.v1.Session()
+        self.sess.saver = tf.compat.v1.train.Saver()
         game.new_episode()
         self.state = game.get_state()
         self.nextState = []
         self.loadSession()
 
     def loadSession(self):
-        # if load_traing_model:
-        #     directory = "./allModels/model{}/models/model.ckpt".format(load_training_model_number)
-        #     saver.restore(self.sess, directory)
-        # else:
-        saver.restore(self.sess, "./models/model.ckpt")
+        if load_traing_model:
+            directory = "./allModels/model{}/models/model.ckpt".format(load_training_model_number)
+            self.saver.restore(self.sess, directory)
+
 
     def on_draw(self):
         game.render()
@@ -562,7 +563,7 @@ if training:
         # if load:
 
         if load:
-            saver.restore(sess, "./models/model.ckpt")
+            sess.saver.restore(sess, "./models/model.ckpt")
         else:
             sess.run(tf.global_variables_initializer())
 
@@ -721,12 +722,12 @@ if training:
                 directory = "./allModels/model{}".format(episode)
                 if not os.path.exists(directory):
                     os.makedirs(directory)
-                save_path = saver.save(sess, "./allModels/model{}/models/model.ckpt".format(episode))
+                save_path = sess.saver.save(sess, "./allModels/model{}/models/model.ckpt".format(episode))
                 # print("Model Saved")
 
             # Save model every 5 episodes
             if episode % 5 == 0:
-                save_path = saver.save(sess, "./models/model.ckpt")
+                save_path = sess.saver.save(sess, "./models/model.ckpt")
                 print("Model Saved")
 else:
     print("setting up window")
