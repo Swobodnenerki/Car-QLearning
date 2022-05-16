@@ -49,16 +49,15 @@ memory_size = 100000  # Number of experiences the Memory can keep
 pretrain_length = memory_size  # Number of experiences stored in the Memory when initialized for the first time
 
 ### MODIFY THIS TO FALSE IF YOU JUST WANT TO SEE THE TRAINED AGENT
-training =  True
+training =  False
 
-load = False
+load = True
 
 starting_episode = 0
 
-load_traing_model = False
+load_traing_model = True
 
-load_training_model_number = 0
-
+load_training_model_number = 9000
 
 class DDDQNNet:
     def __init__(self, state_size, action_size, learning_rate, name):
@@ -505,10 +504,10 @@ class MyWindow(pyglet.window.Window):
         # load background image
         self.sess = tf.compat.v1.Session()
         self.sess.saver = tf.compat.v1.train.Saver()
+        self.load_training_model_number = load_training_model_number
         game.new_episode()
         self.state = game.get_state()
         self.nextState = []
-        self.load_training_model_number = 60 ## DONT FORGET
         self.loadSession()
 
     def loadSession(self):
