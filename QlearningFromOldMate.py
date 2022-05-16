@@ -49,13 +49,13 @@ memory_size = 100000  # Number of experiences the Memory can keep
 pretrain_length = memory_size  # Number of experiences stored in the Memory when initialized for the first time
 
 ### MODIFY THIS TO FALSE IF YOU JUST WANT TO SEE THE TRAINED AGENT
-training =  False
+training =  True
 
-load = True
+load = False
 
 starting_episode = 0
 
-load_traing_model = True
+load_traing_model = False
 
 load_training_model_number = 9000
 
