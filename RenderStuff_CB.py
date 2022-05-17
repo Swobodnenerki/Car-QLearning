@@ -34,13 +34,14 @@ class MyWindow(pyglet.window.Window):
         if self.firstClick:
             self.clickPos = [x, y]
         else:
+            pass
             #print("self.gates.append(RewardGate({}, {}, {}, {}))".format(self.clickPos[0],
-            #                                                       displayHeight - self.clickPos[1],
-            #                                                       x, displayHeight - y))
+             #                                                      displayHeight - self.clickPos[1],
+              #                                                     x, displayHeight - y))
         #
-            print("self.gates.append(RewardGate({}, {}, {}, {}))".format(self.clickPos[0],
-                                                                   self.clickPos[1],
-                                                                   x, y))
+            #print("self.gates.append(RewardGate({}, {}, {}, {}))".format(self.clickPos[0],
+             #                                                      self.clickPos[1],
+              #                                                     x, y))
         
         self.firstClick = not self.firstClick
 
@@ -49,13 +50,13 @@ class MyWindow(pyglet.window.Window):
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.LEFT:
-            self.game.car.updateWithAction(0)
+            self.game.make_action([1,0,0,0])
         if symbol == key.RIGHT:
-            self.game.car.updateWithAction(1)
+            self.game.make_action([0,1,0,0])
         if symbol == key.UP:
-            self.game.car.updateWithAction(2)
+            self.game.make_action([0,0,1,0])
         if symbol == key.DOWN:
-            self.game.car.updateWithAction(3)
+            self.game.make_action(3[0,0,0,1])
 
     def on_key_release(self, symbol, modifiers):
         pass

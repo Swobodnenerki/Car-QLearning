@@ -65,46 +65,79 @@ class Game:
         self.walls.append(Wall(961, 422, 869, 506))
         self.walls.append(Wall(869, 506, 231, 495))
         self.walls.append(Wall(231, 495, 195, 336))
-
+        #self.walls.append(Wall(209, 475, 161, 490))
+        self.walls.append(Wall(206, 466, 160, 480))
         
 
     def set_gates(self):
-        self.gates.append(RewardGate(193, 197, 147, 183))
-        self.gates.append(RewardGate(187, 235, 137, 221))
-        self.gates.append(RewardGate(178, 260, 128, 265))
-        self.gates.append(RewardGate(131, 323, 175, 315))
-        self.gates.append(RewardGate(153, 373, 180, 357))
-        self.gates.append(RewardGate(183, 430, 215, 387))
-        self.gates.append(RewardGate(276, 469, 299, 429))
-        self.gates.append(RewardGate(351, 481, 351, 453))
-        self.gates.append(RewardGate(424, 481, 425, 443))
-        self.gates.append(RewardGate(523, 478, 515, 439))
-        self.gates.append(RewardGate(618, 465, 601, 429))
-        self.gates.append(RewardGate(704, 425, 657, 417))
-        self.gates.append(RewardGate(642, 343, 594, 372))
-        self.gates.append(RewardGate(558, 303, 527, 331))
-        self.gates.append(RewardGate(511, 277, 473, 308))
-        self.gates.append(RewardGate(456, 255, 420, 265))
-        self.gates.append(RewardGate(459, 229, 449, 195))
-        self.gates.append(RewardGate(511, 231, 520, 201))
-        self.gates.append(RewardGate(561, 239, 575, 205))
-        self.gates.append(RewardGate(634, 249, 645, 215))
-        self.gates.append(RewardGate(692, 262, 714, 235))
-        self.gates.append(RewardGate(742, 289, 760, 265))
-        self.gates.append(RewardGate(788, 314, 809, 287))
-        self.gates.append(RewardGate(847, 335, 849, 288))
-        self.gates.append(RewardGate(919, 325, 909, 291))
-        self.gates.append(RewardGate(976, 287, 943, 245))
-        self.gates.append(RewardGate(999, 211, 963, 197))
-        self.gates.append(RewardGate(987, 118, 944, 141))
-        self.gates.append(RewardGate(917, 59, 879, 83))
-        self.gates.append(RewardGate(800, 37, 785, 81))
-        self.gates.append(RewardGate(666, 38, 667, 82))
-        self.gates.append(RewardGate(568, 35, 563, 91))
-        self.gates.append(RewardGate(442, 35, 447, 87))
-        self.gates.append(RewardGate(337, 37, 345, 87))
-        self.gates.append(RewardGate(247, 41, 261, 99))
-        self.gates.append(RewardGate(179, 53, 217, 90))
+        self.gates.append(RewardGate(201, 175, 151, 163))
+        self.gates.append(RewardGate(193, 201, 148, 183))
+        self.gates.append(RewardGate(189, 217, 141, 203))
+        self.gates.append(RewardGate(187, 236, 139, 224))
+        self.gates.append(RewardGate(177, 245, 131, 247))
+        self.gates.append(RewardGate(173, 262, 128, 266))
+        self.gates.append(RewardGate(179, 287, 135, 297))
+        self.gates.append(RewardGate(175, 314, 134, 324))
+        self.gates.append(RewardGate(181, 332, 138, 348))
+        self.gates.append(RewardGate(183, 358, 149, 374))
+        self.gates.append(RewardGate(191, 367, 165, 392))
+        self.gates.append(RewardGate(215, 383, 180, 433))
+        self.gates.append(RewardGate(255, 409, 227, 455))
+        self.gates.append(RewardGate(299, 426, 275, 472))
+        self.gates.append(RewardGate(348, 448, 347, 485))
+        self.gates.append(RewardGate(383, 445, 381, 481))
+        self.gates.append(RewardGate(424, 442, 425, 487))
+        self.gates.append(RewardGate(469, 439, 475, 477))
+        self.gates.append(RewardGate(510, 439, 523, 477))
+        self.gates.append(RewardGate(563, 433, 563, 471))
+        self.gates.append(RewardGate(598, 425, 618, 467))
+        self.gates.append(RewardGate(641, 423, 693, 461))
+        self.gates.append(RewardGate(645, 406, 703, 375))
+        self.gates.append(RewardGate(623, 389, 670, 352))
+        self.gates.append(RewardGate(595, 373, 636, 349))
+        self.gates.append(RewardGate(561, 354, 593, 317))
+        self.gates.append(RewardGate(522, 338, 559, 299))
+        self.gates.append(RewardGate(474, 314, 511, 281))
+        self.gates.append(RewardGate(439, 291, 477, 265))
+        self.gates.append(RewardGate(393, 251, 449, 244))
+        self.gates.append(RewardGate(417, 197, 460, 235))
+        self.gates.append(RewardGate(473, 194, 475, 241))
+        self.gates.append(RewardGate(509, 206, 501, 235))
+        self.gates.append(RewardGate(538, 204, 536, 242))
+        self.gates.append(RewardGate(574, 207, 560, 237))
+        self.gates.append(RewardGate(624, 208, 612, 243))
+        self.gates.append(RewardGate(646, 206, 636, 246))
+        self.gates.append(RewardGate(684, 212, 672, 250))
+        self.gates.append(RewardGate(716, 233, 694, 266))
+        self.gates.append(RewardGate(744, 246, 713, 277))
+        self.gates.append(RewardGate(761, 262, 740, 290))
+        self.gates.append(RewardGate(782, 270, 759, 294))
+        self.gates.append(RewardGate(809, 291, 784, 315))
+        self.gates.append(RewardGate(830, 293, 817, 334))
+        self.gates.append(RewardGate(850, 285, 846, 334))
+        self.gates.append(RewardGate(877, 288, 884, 337))
+        self.gates.append(RewardGate(902, 284, 920, 320))
+        self.gates.append(RewardGate(922, 267, 964, 296))
+        self.gates.append(RewardGate(933, 236, 990, 252))
+        self.gates.append(RewardGate(956, 194, 1011, 200))
+        self.gates.append(RewardGate(955, 162, 1000, 136))
+        self.gates.append(RewardGate(922, 127, 965, 103))
+        self.gates.append(RewardGate(899, 110, 940, 83))
+        self.gates.append(RewardGate(882, 96, 919, 59))
+        self.gates.append(RewardGate(850, 86, 861, 30))
+        self.gates.append(RewardGate(794, 92, 808, 38))
+        self.gates.append(RewardGate(751, 88, 752, 36))
+        self.gates.append(RewardGate(703, 87, 696, 38))
+        self.gates.append(RewardGate(654, 88, 646, 34))
+        self.gates.append(RewardGate(610, 88, 607, 41))
+        self.gates.append(RewardGate(560, 88, 550, 35))
+        self.gates.append(RewardGate(520, 84, 512, 33))
+        self.gates.append(RewardGate(464, 86, 458, 34))
+        self.gates.append(RewardGate(422, 90, 421, 32))
+        self.gates.append(RewardGate(372, 89, 359, 37))
+        self.gates.append(RewardGate(326, 94, 320, 36))
+        self.gates.append(RewardGate(290, 90, 274, 36))
+        self.gates.append(RewardGate(246, 92, 221, 46))
 
     def new_episode(self):
         self.car.reset()
@@ -118,6 +151,8 @@ class Game:
         # returns reward
         actionNo = np.argmax(action)
         self.car.updateWithAction(actionNo)
+        #print("We're here now!")
+        #print(self.car.reward)
         return self.car.reward
 
     def is_episode_finished(self):
@@ -263,7 +298,7 @@ class Car:
         self.direction = vec2(0, 1)
         self.direction = self.direction.rotate(180 / 12)
         self.acc = 0
-        self.scalefactor = 0.6
+        self.scalefactor = 0.8
         self.width = int(40*self.scalefactor)
         self.height = int(30*self.scalefactor)
         self.turningRate = 5.0 / self.width
@@ -291,6 +326,7 @@ class Car:
         self.walls = walls
         self.rewardGates = rewardGates
         self.rewardNo = 0
+        self.rewardGates[self.rewardNo].line.setColor([255, 0, 0])
 
         self.directionToRewardGate = self.rewardGates[self.rewardNo].center - vec2(self.x, self.y)
         #print("X Coordinate of first Gate:" + str(self.rewardGates[self.rewardNo].y1))
@@ -328,6 +364,10 @@ class Car:
         self.score = 0
         for g in self.rewardGates:
             g.active = True
+            g.line.setColor([0, 255, 0])
+        
+        self.rewardGates[self.rewardNo].line.setColor([255, 0, 0])
+
 
     def show(self):
         # first calculate the center of the car in order to allow the
@@ -432,6 +472,7 @@ class Car:
             #print("Hit a gate!")
             self.rewardGates[self.rewardNo].active = False
             self.rewardNo += 1
+            self.rewardGates[self.rewardNo].line.setColor([255, 0, 0])
             self.score += 1
             self.rewardAdditional += 50 # This works, it's actually 9
             #print("rewardAdditional after hittting gate: " + str(self.rewardAdditional))
@@ -440,6 +481,7 @@ class Car:
                 for g in self.rewardGates:
                     g.active = True
         self.reward = self.reward + self.rewardAdditional + self.rewardPenalty
+        #print("RewardIS: " + str(self.reward))
 
         self.directionToRewardGate = self.rewardGates[self.rewardNo].center - vec2(self.x, self.y)
 
@@ -524,8 +566,7 @@ class Car:
         for wall in self.walls:
             if wall.hitCar(self):
                 return True
-
-        return False
+        r()eturn False
 
     """
     returns the point of collision of a line (x1,y1,x2,y2) with the walls, 

@@ -24,8 +24,8 @@ possible_actions = np.identity(game.no_of_actions, dtype=int).tolist()
 
 ### MODEL HYPERPARAMETERS
 state_size = [game.state_size]  # Our input is a stack of 4 frames hence 100x120x4 (Width, height, channels)
-action_size = game.no_of_actions  # 7 possible actions
-learning_rate = 0.00025  # Alpha (aka learning rate)
+action_size = game.no_of_actions  # 9 possible actions
+learning_rate = 0.1  # Alpha (aka learning rate) # 0.00025
 
 ### TRAINING HYPERPARAMETERS
 total_episodes = 50000  # Total episodes for training
@@ -36,9 +36,9 @@ batch_size = 64
 max_tau = 10000  # Tau is the C step where we update our target network
 
 # EXPLORATION HYPERPARAMETERS for epsilon greedy strategy
-explore_start = 1.0  # exploration probability at start
-explore_stop = 0.1  # minimum exploration probability
-decay_rate = 0.00001  # exponential decay rate for exploration prob
+explore_start = 1.0  # exploration probability at start, CHANGE
+explore_stop = 0.01  # minimum exploration probability
+decay_rate = 0.00003  # exponential decay rate for exploration prob
 
 # Q LEARNING hyperparameters
 gamma = 0.95  # Discounting rate
@@ -49,15 +49,21 @@ memory_size = 100000  # Number of experiences the Memory can keep
 pretrain_length = memory_size  # Number of experiences stored in the Memory when initialized for the first time
 
 ### MODIFY THIS TO FALSE IF YOU JUST WANT TO SEE THE TRAINED AGENT
-training =  True
+metaTraining = True
+real_load_training_model_number = 0
 
-load = False
-
-starting_episode = 0
-
-load_traing_model = False
-
-load_training_model_number = 9000
+if metaTraining == True:
+    training =  True
+    load = False
+    starting_episode = real_load_training_model_number
+    load_traing_model = False
+    load_training_model_number = real_load_training_model_number
+else:
+    training =  False
+    load = True
+    starting_episode = real_load_training_model_number
+    load_traing_model = True
+    load_training_model_number = real_load_training_model_number
 
 class DDDQNNet:
     def __init__(self, state_size, action_size, learning_rate, name):
@@ -520,9 +526,10 @@ class MyWindow(pyglet.window.Window):
         if self.firstClick:
             self.clickPos = [x, y]
         else:
-            print("self.gates.append(RewardGate({}, {}, {}, {}))".format(self.clickPos[0],
-                                                                    displayHeight - self.clickPos[1],
-                                                                    x, displayHeight - y))
+            pass
+            #print("self.gates.append(RewardGate({}, {}, {}, {}))".format(self.clickPos[0],
+             #                                                       displayHeight - self.clickPos[1],
+              #                                                      x, displayHeight - y))
         #
             # self.gates.append(RewardGate(self.clickPos[0], self.clickPos[1], x, y))
 
@@ -585,6 +592,7 @@ if training:
 
         # Init the game
         game.new_episode()
+        game.highScore = 0
 
         # Update the parameters of our TargetNetwork with DQN_weights
         update_target = update_target_graph()
@@ -624,10 +632,11 @@ if training:
                 # Add the reward to total reward
                 episode_rewards.append(reward)
                 if step >= max_steps:
-                    print("fuckin nice mate")
-                    print('Episode: {}'.format(episode),
-                          'Total reward: {}'.format(np.sum(episode_rewards)),
-                          'Explore P: {:.4f}'.format(explore_probability))
+                    pass
+                    #print("fuckin nice mate")
+                    #print('Episode: {}'.format(episode),
+                     #     'Total reward: {}'.format(np.sum(episode_rewards)),
+                    #      'Explore P: {:.4f}'.format(explore_probability))
                 # If the game is finished
                 if done:
                     # the episode ends so no next state
@@ -644,9 +653,11 @@ if training:
                           # '\tTraining loss: {:.4f}'.format(loss),
                           '\tExplore P: {:.4f}'.format(explore_probability),
                           '\tScore: {}'.format(game.get_score()),
+                          '\tHighScore: {}'.format(game.highScore),
                           '\tlifespan: {}'.format(game.get_lifespan()),
                           '\tactions per reward gate: {:.4f}'.format(game.get_lifespan() / (max(1, game.get_score()))))
-
+                    if game.get_score() > game.highScore:
+                        game.highScore = game.get_score()
                     # Add experience to memory
                     experience = state, action, reward, next_state, done
                     memory.store(experience)
