@@ -67,7 +67,6 @@ class Game:
         self.walls.append(Wall(231, 495, 195, 336))
         #self.walls.append(Wall(209, 475, 161, 490))
         self.walls.append(Wall(206, 466, 160, 480))
-        
 
     def set_gates(self):
         self.gates.append(RewardGate(201, 175, 151, 163))
@@ -142,17 +141,15 @@ class Game:
     def new_episode(self):
         self.car.reset()
 
-
     def get_state(self):
         return self.car.getState()
-        
 
     def make_action(self, action):
         # returns reward
         actionNo = np.argmax(action)
         self.car.updateWithAction(actionNo)
         #print("We're here now!")
-        #print(self.car.reward)
+        # print(self.car.reward)
         return self.car.reward
 
     def is_episode_finished(self):
@@ -328,7 +325,8 @@ class Car:
         self.rewardNo = 0
         self.rewardGates[self.rewardNo].line.setColor([255, 0, 0])
 
-        self.directionToRewardGate = self.rewardGates[self.rewardNo].center - vec2(self.x, self.y)
+        self.directionToRewardGate = self.rewardGates[self.rewardNo].center - vec2(
+            self.x, self.y)
         #print("X Coordinate of first Gate:" + str(self.rewardGates[self.rewardNo].y1))
 
         self.reward = 0
@@ -365,9 +363,8 @@ class Car:
         for g in self.rewardGates:
             g.active = True
             g.line.setColor([0, 255, 0])
-        
-        self.rewardGates[self.rewardNo].line.setColor([255, 0, 0])
 
+        self.rewardGates[self.rewardNo].line.setColor([255, 0, 0])
 
     def show(self):
         # first calculate the center of the car in order to allow the
@@ -375,7 +372,8 @@ class Car:
         upVector = self.direction.rotate(90)
         drawX = self.direction.x * self.width / 2 + upVector.x * self.height / 2
         drawY = self.direction.y * self.width / 2 + upVector.y * self.height / 2
-        self.carSprite.update(x=self.x - drawX, y=self.y - drawY, rotation=-get_angle(self.direction))
+        self.carSprite.update(x=self.x - drawX, y=self.y -
+                              drawY, rotation=-get_angle(self.direction))
         self.carSprite.draw()
         # self.showCollisionVectors()
 
@@ -427,7 +425,7 @@ class Car:
 
         for i in range(1):
             if not self.dead:
-                self.lifespan+=1
+                self.lifespan += 1
                 self.move()
                 self.updateControls()
 
@@ -435,14 +433,14 @@ class Car:
                     self.dead = True
                     # return
                 self.checkRewardGates()
-                #print(self.rewardAdditional)
-                #print(totalReward)
-                #print(totalReward)
+                # print(self.rewardAdditional)
+                # print(totalReward)
+                # print(totalReward)
                 #print("totalReward: " + str(totalReward))
                 #print("totalAdditional Reward: " + str(self.rewardAdditional))
                 #print("self.reward: " + str(self.reward))
-                
-        #print(self.reward)
+
+        # print(self.reward)
         self.setVisionVectors()
 
         # self.update()
@@ -474,7 +472,7 @@ class Car:
             self.rewardNo += 1
             self.rewardGates[self.rewardNo].line.setColor([255, 0, 0])
             self.score += 1
-            self.rewardAdditional += 50 # This works, it's actually 9
+            self.rewardAdditional += 50  # This works, it's actually 9
             #print("rewardAdditional after hittting gate: " + str(self.rewardAdditional))
             if self.rewardNo == len(self.rewardGates):
                 self.rewardNo = 0
@@ -483,7 +481,8 @@ class Car:
         self.reward = self.reward + self.rewardAdditional + self.rewardPenalty
         #print("RewardIS: " + str(self.reward))
 
-        self.directionToRewardGate = self.rewardGates[self.rewardNo].center - vec2(self.x, self.y)
+        self.directionToRewardGate = self.rewardGates[self.rewardNo].center - vec2(
+            self.x, self.y)
 
     """
     changes the position of the car to account for acceleration, velocity, friction and drift
@@ -540,11 +539,13 @@ class Car:
             driftAmount = 0
 
         if self.turningLeft:
-            self.direction = self.direction.rotate(radiansToAngle(self.turningRate) * multiplier)
+            self.direction = self.direction.rotate(
+                radiansToAngle(self.turningRate) * multiplier)
 
             self.driftMomentum -= driftAmount
         elif self.turningRight:
-            self.direction = self.direction.rotate(-radiansToAngle(self.turningRate) * multiplier)
+            self.direction = self.direction.rotate(
+                -radiansToAngle(self.turningRate) * multiplier)
             self.driftMomentum += driftAmount
         self.acc = 0
         if self.accelerating:
@@ -566,7 +567,7 @@ class Car:
         for wall in self.walls:
             if wall.hitCar(self):
                 return True
-        r()eturn False
+        return False
 
     """
     returns the point of collision of a line (x1,y1,x2,y2) with the walls, 
@@ -578,7 +579,8 @@ class Car:
         minDist = 2 * displayWidth
         closestCollisionPoint = vec2(0, 0)
         for wall in self.walls:
-            collisionPoint = getCollisionPoint(x1, y1, x2, y2, wall.x1, wall.y1, wall.x2, wall.y2)
+            collisionPoint = getCollisionPoint(
+                x1, y1, x2, y2, wall.x1, wall.y1, wall.x2, wall.y2)
             if collisionPoint is None:
                 continue
             if dist(x1, y1, collisionPoint.x, collisionPoint.y) < minDist:
@@ -594,7 +596,8 @@ class Car:
 
     def getState(self):
         self.setVisionVectors()
-        normalizedVisionVectors = [1 - (max(1.0, line) / self.vectorLength) for line in self.collisionLineDistances]
+        normalizedVisionVectors = [
+            1 - (max(1.0, line) / self.vectorLength) for line in self.collisionLineDistances]
 
         normalizedForwardVelocity = max(0.0, self.vel / self.maxSpeed)
         normalizedReverseVelocity = max(0.0, self.vel / self.maxReverseSpeed)
@@ -605,7 +608,8 @@ class Car:
             normalizedPosDrift = 0
             normalizedNegDrift = self.driftMomentum / -5
 
-        normalizedAngleOfNextGate = (get_angle(self.direction) - get_angle(self.directionToRewardGate)) % 360
+        normalizedAngleOfNextGate = (
+            get_angle(self.direction) - get_angle(self.directionToRewardGate)) % 360
         if normalizedAngleOfNextGate > 180:
             normalizedAngleOfNextGate = -1 * (360 - normalizedAngleOfNextGate)
 
@@ -639,7 +643,8 @@ class Car:
 
     def setVisionVector(self, startX, startY, angle):
         collisionVectorDirection = self.direction.rotate(angle)
-        collisionVectorDirection = collisionVectorDirection.normalize() * self.vectorLength
+        collisionVectorDirection = collisionVectorDirection.normalize() * \
+            self.vectorLength
         startingPoint = self.getPositionOnCarRelativeToCenter(startX, startY)
         collisionPoint = self.getCollisionPointOfClosestWall(startingPoint.x, startingPoint.y,
                                                              startingPoint.x + collisionVectorDirection.x,
